@@ -1,17 +1,158 @@
 <p align="center">
+  <a href="https://github.com/icdev-ai/icdev/stargazers"><img src="https://img.shields.io/github/stars/icdev-ai/icdev?style=social" alt="GitHub Stars"></a>
+  <a href="https://github.com/icdev-ai/icdev/network/members"><img src="https://img.shields.io/github/forks/icdev-ai/icdev?style=social" alt="GitHub Forks"></a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="License">
   <img src="https://img.shields.io/badge/python-3.9%2B-brightgreen" alt="Python 3.9+">
+  <img src="https://img.shields.io/badge/version-1.2.37-blue" alt="Version">
+  <a href="https://pypi.org/project/icdev/"><img src="https://img.shields.io/pypi/v/icdev?color=informational&label=PyPI" alt="PyPI Version"></a>
+  <a href="https://pypi.org/project/icdev/"><img src="https://img.shields.io/pypi/dm/icdev?label=PyPI%20downloads" alt="PyPI Downloads"></a>
   <img src="https://img.shields.io/badge/compliance%20frameworks-42-orange" alt="Compliance Frameworks">
   <img src="https://img.shields.io/badge/tools-560%2B-blueviolet" alt="Tools">
   <img src="https://img.shields.io/badge/agents-16-red" alt="Agents">
   <img src="https://img.shields.io/badge/languages-6-green" alt="Languages">
   <img src="https://img.shields.io/badge/canvases-13-00acc1" alt="Design Canvases">
   <img src="https://img.shields.io/badge/solution%20packs-7-ff6b35" alt="Solution Packs">
+  <a href="https://github.com/icdev-ai/icdev/issues"><img src="https://img.shields.io/github/issues/icdev-ai/icdev" alt="Open Issues"></a>
+  <a href="https://github.com/icdev-ai/icdev/actions"><img src="https://img.shields.io/github/actions/workflow/status/icdev-ai/icdev/icdev-ci.yml?label=CI" alt="CI Status"></a>
 </p>
 
 # ICDEV™ — Intelligent Certified Development Platform
 
 **A system that builds systems.**
+
+> **DISCLAIMER:** This repository does NOT contain classified or Controlled Unclassified Information (CUI). Terms like "CUI", "SECRET", "IL4", "IL5", "IL6" appear throughout as **configuration values and template strings** — not as indicators that this repository itself is classified. Classification terminology references publicly available U.S. government standards ([EO 13526](https://www.archives.gov/isoo/policy-documents/cnsi-eo.html), [32 CFR Part 2002](https://www.ecfr.gov/current/title-32/subtitle-B/chapter-XX/part-2002), [NIST SP 800-53](https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final)). File headers containing `[TEMPLATE: CUI // SP-CTI]` are **template markers** demonstrating the format ICDEV™ applies to generated artifacts.
+
+---
+
+## Table of Contents
+
+- [What's New](#whats-new-in-1237--icdev-cortex-unified-governed-ai-facade--kanban-governed-delivery-pipeline)
+- [What ICDEV™ Builds](#what-icdev-builds)
+- [10 Design Canvases](#10-design-canvases)
+- [Quick Start](#quick-start)
+- [FORGE Framework](#how-it-actually-works)
+- [Ask Any Canvas](#ask-any-canvas)
+- [Network Design Canvas](#network-design-canvas)
+- [Agentic AI Design Canvas](#agentic-ai-design-canvas)
+- [FathomDesk — Trading Intelligence](#fathomdesk--ai-powered-trading-intelligence)
+- [FORGE Academy](#forge-academy)
+- [AI GameDay](#ai-gameday)
+- [SaaS & Multi-Tenancy](#saas--portal)
+- [MCP Server Integration](#mcp-server-integration)
+- [Security](#security)
+- [Deployment](#deployment)
+- [Testing](#testing)
+- [Project Structure](#project-structure)
+- [License](#license)
+
+---
+
+## What's New in 1.2.37 — ICDEV Cortex: Unified Governed AI Facade & Kanban Governed Delivery Pipeline
+
+- **ICDEV Cortex — one governed entrypoint for all AI.** A new facade — `cortex.complete() / reason() / search() / extract() / classify() / govern()` — sits over the LLM router, RAG, KG, DIC, and IQE. Every call is policy-routed, token-accounted end-to-end (result → audit → metrics), and can fail closed on a governance violation (`governance.fail_closed` is now live, not dead config). Cross-backend search merges results with Reciprocal Rank Fusion; an opt-in in-process response cache (LRU + TTL) is audited and tenant-safe. Governed Chain-of-Thought / debate / council reasoning is exposed over REST, and a governance-first home monitor card surfaces usage and spend over `cortex_audit`.
+- **Cortex external exposure — scoped service keys + DataBridge connectors.** External services can consume Cortex through scoped service keys and a client SDK. New DataBridge connectors expose `icdev_cpmp` (contract/delivery bridge, including `cpars_assessments` + `negative_events` and a `mod_recommendations` write path) and `icdev_demand` (RFI demand signals) to workforce tools; a RICOAS intake bridge lands at `/cortex/api/v1/intake/*`, and a won bid can propose the `/cpmp` delivery baseline via the award endpoint.
+- **Policy-routed LLM — the content decides whether a call may leave the host.** Pillar-0 egress policy classifies request content and keeps CUI / local-only chains on-host while allowing cloud models for releasable content. Playwright / e2e execution chains are centralized on the configured test-execution provider.
+- **Kanban Governed Delivery Pipeline — repo-aware dispatch + gate integrity.** External-repo (`prem-*`) tasks now build **into** their target repo instead of churning against ICDEV's tree-scoped gates; a task is *done* only when its work **landed** on that repo's `origin/main`, and bypass can't skip the gate. Manual-mode gate tasks are exempt from the reaper, startup recovery, and the backlog→scheduled promoter — closing the four paths that previously released (then erased) gated work. The worktree sweeper no longer reports removals it never performed, the two never-populated board columns are wired, a Manual Build checkbox + build-model selector were added, and 76 failing kanban tests were repaired alongside 3 real schema/production bugs.
+- **GovCon PTW — real prices, real people, cited win themes.** A bid-side LCAT→person registry, auditable pricing that a win carries into `/cpmp` (a zero rate is treated as real data, not missing), win-theme intake that actually shapes the draft, and a PTW-posture Council consult; `specialist_consult` now fails closed. A whole BI dashboard can finally be exported.
+- **Housekeeping.** Employer identity removed from the repo (no company name in ICDEV); a dashboard fix where an unescaped apostrophe had killed every function on the home page; the CI lint gate no longer auto-`--fix`es away lint debt.
+
+---
+
+## What's New in 1.2.36 — Security Fix: ABAC Need-to-Know & Canvases Discoverable After `pip install`
+
+- **Security — ABAC ownership enforcement (fail-open fix).** Attribute references like `${subject.user_id}` were resolved against a *flattened* context, so the dotted path never resolved and yielded `None` — which the matcher treats as match-all. Because evaluation is first-match-wins and `proposal_section_writer_own` (Permit) precedes `proposal_section_writer_deny_unassigned` (Deny), any `section_writer` could edit **any** proposal section, not just their own. References now resolve against a nested context, and an unresolvable reference becomes a sentinel that can never match — so evaluation falls through to deny (fail-closed). Ownership scoping on `developer_readwrite_own` was affected the same way. **Upgrade if you rely on ABAC need-to-know.**
+- **Canvases are discoverable after `pip install`.** `icdev init` seeds a project's `.env` from the packaged template, which was missing ~90 capability flags — so Document Intelligence, Tech Writer, Notebook, Slides, and the RFI canvas were invisible on a fresh install even though the code shipped. The template now documents **62/62** registry-declared enablement flags, and two new release gates (`env_files_sync`, `env_flags_documented`) keep it from drifting again. (Already-installed users can run `icdev enable dic` today — it reads the registry directly.)
+- **DIC AI Assist no longer silently abstains.** A single transient empty completion from a cloud model left the section blank with no feedback. Empty completions are now retried (bounded), the per-attempt timeout is configurable and more generous, and an abstention is surfaced to the reviewer instead of silently reloading.
+- **Schema completeness.** `rag_queries` / `rag_citations` are materialized in the PG schema and init (the RAG result-card renderer already queried them), and `tenant_id` / `classification` RLS columns were added to `pg_pwin_assessments`, `pg_competitor_awards`, and `pg_capture_gate_decisions`, which previously raised `UndefinedColumn` on every read.
+
+---
+
+## What's New in 1.2.35 — TRUST: Anti-Hallucination Citations, Provenance & Fail-Closed Data Masking
+
+The **TRUST** initiative makes everything ICDEV™ generates cite its sources with real data provenance, and enforces data masking across the ecosystem.
+
+- **Universal source citations + provenance** — Everything ICDEV™ generates (proposals, RFI responses, DIC documents, Tech Writer drafts, and generated child apps) now carries inline `[source:]` citations validated against its evidence, with a blocking `citation_guard` on promote/export (HITL `force_*` override + audit, mirroring `placeholder_guard`). Built on a shared `tools/quality/citation_grounding.py` core; per-artifact provenance is backed by the materialized `rag_provenance_ledger`.
+- **Fail-closed data masking** — LLM egress can abort (`RedactionUnavailableError`) rather than send raw PII/CUI when the sanitizer is unavailable (`redaction.fail_closed`); ingestion-time masking (`redaction.mask_at_ingestion`) anonymizes content before it reaches the vector store; a scheduled `redaction_scan_reflex` files `[PII-SCAN]` remediation cards for unmasked data at rest. All toggles default off for safe rollout.
+- **Anti-hallucination consistency** — the deterministic confabulation detector (fabricated-citation patterns, contradictions, hedging) is wired into RFI, proposals, and DIC generation as a non-blocking reviewer signal, complementing DIC's verifier + abstention. Every AI-generated draft is HITL-gated — labeled `ai_generated` and promoted only by a human approver, never auto-published.
+- **Coherence gate** — `coherence_checker.check_trust_coverage` enforces that the grounding modules ship in both package trees, child apps inherit them, and the redaction toggles are present.
+
+---
+
+## What's New in 1.2.34 — BI Dashboard Canvas & Rubric-Gated Agent Loop
+
+- **BI Dashboard Canvas** — NL-driven 2D/3D chart canvas at `/bi_dashboard`: describe a chart in plain English and get a rendered 2D or 3D visualization (bar, scatter3d, surface3d, bar3d) backed by real project data via a ported VIZ kernel + ECharts-gl. Two new ACE Quick Launch presets (`bi_build_dashboard`, `bi_kg_insights`).
+- **Rubric-Gated Agent Loop** — `run_agent_loop_with_rubric()` in `icdev/tools/llm/agent_loop.py` declares a rubric up front, runs the agent loop, then has a separate tool-free grader LLM judge the result (satisfied / needs_revision / failed); on `needs_revision` the grader's feedback is injected and the loop resumes from the existing transcript for up to `max_grading_iterations` rounds. Framework-agnostic adaptation of deepagents' RubricMiddleware pattern — no LangGraph dependency. 12 new tests.
+- **Config Hygiene Sweep** — repo-wide `args/*.yaml` sweep removed several silent duplicate-mapping-key landmines (`llm_config.yaml`, `genesis_config.yaml`, `security_gates.yaml`, `simulation_canvas_registry.yaml`) and fixed a real YAML indentation parse error in `package_exclusions.yaml` that had been breaking the installer's exclusion loader outright.
+
+### Fixed
+- **BI Dashboard bar3d aggregation** — `_structure_to_spec()` treated bar3d's categorical x/y fields (e.g. region/quarter) as raw floats, silently dropping every row; now builds `x_categories`/`y_categories` from real column values and aggregates z per (x, y) pair per the ECharts `bar3D` contract.
+- **Coherence checker nav-link false positive** — `check_new_page_completeness`'s nav-link check only recognized hardcoded `href="/<canvas>"` strings, false-positiving on registry-driven canvases (`component_registry.yaml` → `nav_tree`) that render their link dynamically. The check is now registry-aware.
+- **Untrusted SVG parsing (Bandit B314)** — `tools/viz/svg_to_pptx.py` now parses SVG input via `defusedxml` instead of stdlib `xml.etree.ElementTree`.
+
+- **RFI Response Engine** — Full GovCon RFI Response Workbench canvas at `/rfi` with HITL review, WriteGuard V&V, cross-section consistency checking, deadline countdown, and one-click "Generate Why Us" narrative. New ACE evaluator team (`rfi_researcher`, `rfi_writer`, `rfi_compliance_reviewer`, `rfi_editor`, `rfi_reviewer`) under `args/ace/roles/`. 104 tests.
+- **Slides: SVG → Native PPTX Shapes** — `tools/viz/svg_to_pptx.py` parses a deterministic SVG subset (rect/circle/ellipse/line/polyline/polygon/path/text, nested `<g transform>`) into native `python-pptx` `FreeformBuilder` vector shapes instead of rasterized pictures, with curves flattened to line segments. New `slide_type="svg_art"` in `pptx_builder`.
+- **Slides: Template-Fill Workflow** — `tools/slides/template_fill.py` adds `/slides/templates`: upload a customer-supplied `.pptx`, inspect its fillable shapes (title/body/table/chart), and fill selected slides in place — format-preserving, no LLM step, deletes unselected slides. New `slides_templates` table.
+- **Slides Schema Fix** — resolved a dialect-mismatch bug where `SERIAL PRIMARY KEY` silently landed on a SQLite-backed connection whenever PostgreSQL was unreachable, breaking autoincrement across the Slides canvas.
+
+---
+
+## What's New in 1.2.31 — Enterprise-Configurable Platform, ACE File Access Broker & Processify Canvas
+
+- **Enterprise-Configurable Platform** — Component registration is now 100% registry-driven. Canvases, child apps, and features are declared in `args/component_registry.yaml`; no changes to `app.py`, `enable.py`, or `base.html` required to add a new component. Core profiles (`args/core_profiles.yaml`) let operators apply environment presets with `icdev profile apply <name>`. Tenant-level enablement overrides land in `tenant_component_overrides` (migration 207); every change is logged to the append-only `component_audit_log` (migration 208).
+- **ACE File Access Broker** — `icdev/tools/ace/file_access_broker.py` enforces three-tier file access for co-worker agents: `zero_access` (`.env`, `*.pem`, `*.tfstate`), `read_only` (lock files, compliance catalogs), `no_delete` (`CLAUDE.md`, goals, IaC). Requests outside policy are blocked at execution time with an audit entry.
+- **ACE Skill Promoter & Soul Manager** — `skill_promoter.py` autonomously proposes new skills derived from co-worker discoveries and queues them for human review. `soul_manager.py` manages SOUL personality configs per co-worker role, enabling per-role tone, vocabulary, and risk posture.
+- **ACE Agent Coordination** — `agent_coordination.py` + migration 222 bring cross-session advisory locks so concurrent co-worker and kanban agents negotiate file ownership rather than stomping each other. Coordination state is persisted and visible in the HITL dashboard.
+- **Agent Loop Persistence** — Migrations 220 (`agent_loop_sessions`) and 221 (`agent_hitl_pending`) give the reusable `run_agent_loop` primitive durable session state: loop resume on restart, HITL item queue with approver assignments, and cost/token tracking per session.
+- **Processify Canvas** — New BPMN-style process design canvas at `/processify`. Drag-and-drop swimlane editor with BPMN 2.0 primitives (tasks, gateways, events, pools), JSON export, compliance overlay (maps lanes to NIST 800-53 process controls), and IQE query support.
+- **Canvas Health Dashboard** — `tools/dashboard/templates/canvas_health/` delivers a real-time health panel for all registered canvases: record counts, last-indexed timestamp, IQE adapter status, missing ACE roles, and pending HITL items.
+- **Updates Feed** — `tools/dashboard/templates/updates/` provides a system-wide chronological feed of component config changes, migration runs, and reflex activity — visible from the main nav under **Updates**.
+- **Coworker HITL Workflow** — `templates/coworker/hitl.html` exposes a dedicated HITL queue UI: approve/reject/comment on co-worker decisions with full audit trail, priority ranking, and bulk-action support.
+- **Billing Module** — `icdev/tools/billing/` adds tenant billing and subscription management: usage metering (API calls, LLM tokens, storage), tier enforcement, invoice generation, and a billing dashboard at `/billing`.
+- **Onboarding Wizard** — New first-run experience (`onboarding.js` + `_onboarding_wizard.html`): 5-step guided setup covers DB backend, LLM provider, first canvas selection, profile application, and dashboard tour. Triggered automatically on fresh installs; re-launchable from Settings.
+- **Migration Topology Visualization** — `migration-topology.js` renders an interactive Sankey-style migration wave diagram at `/migration/topology` — shows workloads, target environments, estimated risk bands, and STIG compliance readiness per wave.
+- **Network Topology Neighbors** — Migration 218 adds `net_topology_neighbors` table with pre-computed neighbor sets for O(1) blast-radius lookup. `blueprint_helpers.py` updated to use the materialized neighbor index rather than graph traversal at query time.
+- **Capability Sheet Reflex** — `icdev/tools/genesis/reflexes/capability_sheet_reflex.py` runs on a 6-hour cadence, auto-generating and updating the `.agents/skills/icdev-capability-sheet` from current tool manifests, MCP registrations, and canvas inventory. Always reflects the live platform state.
+- **CMMI L3 Assessor Hardening** — `cmmi_l3_assessor.py` updated with refined evidence-weight scoring for PA 3.1–3.6, automatic detection of process asset library gaps, and a new HTML evidence report template.
+- **Canvas Auto-Remediation Improvements** — `auto_remediate.py` now triggers on IQE scan findings in addition to drift-detector alerts. Confidence threshold for auto-apply raised to 0.75; sub-threshold findings surface as HITL items in the new HITL queue UI.
+- **Lint Clean (264 fixes)** — Ruff auto-fix resolved 264 style and correctness issues across 128 files; all CI lint gates green.
+
+---
+
+## What's New in 1.2.30 — ACE Co-Worker Hardening, AAC Agent Readiness & Kanban PR Flow
+
+- **ACE Co-Worker Engine — 14 New Roles** — 14 production roles added across 4 domains: monitoring/observability (performance_monitor, reliability_engineer, incident_responder, log_analyst, alert_manager), GovCon (govcon_specialist, capture_manager, proposal_coordinator), CPMP (contract_manager, program_analyst, deliverable_tracker), and FathomDesk (support_engineer, knowledge_curator, escalation_manager). Co-worker intent now classified via LLM + catalog constraint for automatic role assembly.
+- **ACE Hardening & Traceability** — Activity timeline, trust leaderboard, and audit API shipped at `/coworker/<id>/timeline`. Step executor hardened with type safety and error surfacing. Pre-insert pending row on launch eliminates 404 race condition. `listen_topics` guard prevents circular deadlocks. Coherence gate added: `canvas_placeholder_style` detects SQLite `?` vs PG `%s` placeholders.
+- **AI Augmentation Canvas (AAC) — 11-Pillar Agent Readiness Checker** — New assessment suite at `/ai-augmentation/` evaluating AI agents across: structure, configuration, dependencies, documentation, IL classification, NIST 800-53 controls (NLP-extracted), STIG compliance, append-only audit, code quality, security hardening, and test coverage. Adaptive anomaly detection via per-pillar threshold learning. Opportunity scorer ranks findings by impact × feasibility.
+- **Kanban Scheduler PR Flow** — Tasks now follow the same workflow as Claude CLI: push `kanban/<id>` branch → `gh pr create` → store PR URL in `executor_url` — visible on the kanban board. `pr_watcher` daemon (OPT-70) polls CI and auto-merges with `--squash --delete-branch` when green. Enable via `ICDEV_KANBAN_PR_FLOW=true`.
+- **Proposal Inline Annotations** — Section-level annotations with category tagging and margin notes at `/proposals/<id>/sections/<sid>`. Annotators can tag by category (compliance, risk, strength, gap) and attach margin notes that surface in the WriteGuard V&V pipeline.
+- **ACE Preflight Decisions** — `ace_preflight_decisions` table gates co-worker launches with structured go/no-go decisions. Pre-launch validation surfaces blockers before thread pool execution begins.
+- **ClaWhub Risk-Score Blocking** — Dependency imports with risk score > 50 are now blocked at the ClaWhub gate; cached risk scores and severity displayed per import in the UI.
+- **Centralized Logging** — `icdev_logger.get_logger()` now used in all 36 remaining tools that had raw `logging.getLogger()` calls; consistent structured log output across the platform.
+
+---
+
+## What's New in 1.2.29 — AI-ify Posture Engine, DIC Intelligence Hub & Proposals V&V
+
+- **AI-ify Compliance Posture Engine** — Full posture scoring for the AI-ify canvas at `/ai-ify/posture`. Real undercount bug fixed: AI-ify score raised from B → A/99; Agentic AI posture raised from C/78.8 → B/84.7 after hardening two weak designs (Autonomous Coder, Customer Service Agent) and assessing the AI Security Monitor. Both canvases now wired into the `/compliance` hub.
+- **Document Intelligence Canvas (DIC) — Intelligence Hub** — Collaboration hub, freshness engine, document explorer, and HITL handoff workflow shipped as a cohesive phase. `dic_doc_freshness`, `dic_handoff_sessions`, and `dic_handoff_items` tables added. Full BDD test coverage via E2E Behave scenarios.
+- **Proposals WriteGuard V&V Pipeline** — Section-level V&V gate now runs before any proposal section is finalized. Draft rendering on section detail pages (`/proposals/<id>/sections/<sid>`) shows the WriteGuard score, compliance flags, and confidence band inline.
+- **GovCon DHS Proposal Seeding** — 3 DHS solicitations seeded with ICDEV-branded proposal content; `pWin` endpoints and `GOVCON_WRITE_ROLES` synced to the `icdev/` mirror package.
+- **CPMP Contract Modifications** — `cpmp_contract_mods` table added with request/approval workflow for the Contract & Program Management Portfolio canvas.
+- **IQE Security ZIG Queries** — New seed query library at `context/iqe/queries/security/zig_queries.iqe` covering NSA Zero-Incident Goals pillar coverage, unassessed controls, and remediation priority queues.
+- **IQE Data Mapping Queries** — Three new IQE query files for the Data canvas: `field_mappings_high_conf_pending.iqe`, `field_mappings_needs_review.iqe`, `mapping_sessions_pending.iqe`. Data IQE adapter updated to register these collections.
+- **Security Canvas Posture & Artifacts** — ZIG posture view, compliance artifacts page, and security canvas navigation updated with richer data bindings and classification markings.
+- **AIForge IRAD Diagrams** — High-level concept (`aiforge_highlevel_concept.mmd`), solution overview (`aiforge_solution_ov1.mmd`), and three progressive draw.io architecture diagrams committed under `docs/irad/`.
+- **Kanban Bulk-Promote UI** — Gated bulk-promote action for suggested cards; JS syntax regression fixed for the promote endpoint.
+- **Cross-platform path fix** — `validated_commit.py` now resolves `BASE_DIR` to the main worktree via `git rev-parse --show-toplevel`, eliminating path errors in nested worktrees.
+- **Gap Detector scan scope** — `gap_detector.py` now scans the `icdev/` package tree for `CREATE TABLE` statements, resolving the `aac_scans` false-orphan alert.
+- **Ruff lint clean** — 14 Ruff lint errors resolved; CI passing.
+
+---
+
+
 
 ICDEV™ is an AI-powered meta-builder that generates complete, autonomous applications — each with its own agent architecture, compliance automation, testing pipeline, and CI/CD integration. Describe what you need in plain English. Get an ATO-ready system with 42 compliance framework mappings, 15 coordinating AI agents, and every artifact you need for Authority to Operate.
 
@@ -23,21 +164,94 @@ One developer built this. Imagine what your team could do with it.
 
 ---
 
-## What's New in 1.2.37 — ICDEV Cortex: Unified Governed AI Facade & Kanban Governed Delivery Pipeline
+## What's New in 1.2.28 — Data Canvas: Data Mesh, Governance & CSP
 
-- **ICDEV Cortex — one governed entrypoint for all AI.** A new facade — `cortex.complete() / reason() / search() / extract() / classify() / govern()` — sits over the LLM router, RAG, KG, DIC, and IQE. Every call is policy-routed, token-accounted end-to-end (result → audit → metrics), and can fail closed on a governance violation. Cross-backend search merges via Reciprocal Rank Fusion; an opt-in in-process response cache (LRU + TTL) is audited and tenant-safe. Governed Chain-of-Thought / debate / council reasoning is exposed over REST, with a governance-first home monitor card surfacing usage and spend over `cortex_audit`.
-- **Cortex external exposure — scoped service keys + DataBridge connectors.** External services can consume Cortex through scoped service keys and a client SDK. New DataBridge connectors expose `icdev_cpmp` (contract/delivery bridge with CPARS + negative events) and `icdev_demand` (RFI demand signals); a RICOAS intake bridge lands at `/cortex/api/v1/intake/*`, and a won bid can propose the `/cpmp` delivery baseline.
-- **Policy-routed LLM — the content decides whether a call may leave the host.** Pillar-0 egress policy classifies request content and keeps CUI / local-only chains on-host while allowing cloud models for releasable content.
-- **Kanban Governed Delivery Pipeline — repo-aware dispatch + gate integrity.** External-repo tasks now build **into** their target repo instead of churning against ICDEV's tree-scoped gates; a task is *done* only when its work **landed** on that repo's `origin/main`, and bypass can't skip the gate. Manual-mode gate tasks are exempt from the reaper, startup recovery, and the backlog→scheduled promoter. Adds a Manual Build checkbox + build-model selector; 76 failing kanban tests repaired alongside 3 real bugs.
-- **GovCon PTW — real prices, real people, cited win themes.** A bid-side LCAT→person registry, auditable pricing that a win carries into `/cpmp`, win-theme intake that shapes the draft, and a PTW-posture Council consult; `specialist_consult` now fails closed. A whole BI dashboard can finally be exported.
+- **Data Mesh module** (`/data/mesh`) — full domain-driven data mesh with domain registry, data product catalog, SLA enforcement, stewardship ownership matrix, and contract lifecycle management. Backed by `data_mesh/governance_engine.py` + `data_mesh/lineage_emitter.py`. Config: `args/data_mesh_config.yaml`.
+- **Data Canvas Governance Engine** (`/data/governance`) — policy enforcement dashboard aligned to NIST 800-188 and DoDI 8320.02. Stewardship workflows, governance rule library, data quality scoring, and audit-trail-backed policy decisions.
+- **Data Canvas Products Page** (`/data/products`) — first-class data product catalog with ownership, classification zone, lineage graph, SLA status, and consumer subscription tracking.
+- **CSP Analysis Module** (`/data/csp`) — Cloud Service Provider overlay for the Data Design Canvas. Cost projection, compliance posture per CSP, risk tiering, and data sovereignty tagging across 6 cloud providers.
+- **60+ dashboard templates synced to icdev/ package** — GovLift (18 pages: workloads, waves, STIG, audit, simulate, recovery), Info Ops (analysis, OSINT, reports), Innovation pipeline (idea detail, intake, pipeline), Network sub-pages (cloud topology, exec dashboard, subnet calc, partners), Studio (execution, sim hub), Security Canvas (demo, compliance timeline), FORGE Academy (pattern library, org readiness), GameDay (AI league, round ops, team detail), IL5 classification page, MFA setup/verify, proposals dashboard, intake PRD view, supply chain. All templates are now fully installable via `pip install icdev`.
+- **Genesis meta-harness CRLF fix** — `daemon.py`, `eval_harness.py`, `heuristic_writer.py`, `llm_triage.py`, `reflexes/harness.py` line endings normalized for cross-platform compatibility.
+- **STIG compliance pillar update** — `ai_augmentation/agent_readiness/pillars/stig_compliance.py` scoring logic tightened.
 
 ---
 
-## What's New in 1.2.36 — Security Fix: ABAC Need-to-Know & Canvases Discoverable After `pip install`
+## What's New in 1.2.27 — Supply Chain, Chat AI Governance & UX
 
-- **Security — ABAC ownership enforcement (fail-open fix).** Attribute references like `${subject.user_id}` resolved against a flattened context yielded `None` — which the matcher treats as match-all — so any `section_writer` could edit any proposal section. References now resolve against a nested context, and an unresolvable reference becomes a sentinel that can never match, so evaluation falls through to deny (fail-closed). **Upgrade if you rely on ABAC need-to-know.**
-- **Canvases are discoverable after `pip install`.** `icdev init` seeds a project's `.env` from the packaged template, which was missing ~90 capability flags — hiding Document Intelligence, Tech Writer, Notebook, Slides, and the RFI canvas on a fresh install. The template now documents 62/62 registry-declared enablement flags, guarded by two new release gates (`env_files_sync`, `env_flags_documented`).
-- **TRUST (1.2.35)** — universal source citations with data provenance on every generated artifact, a blocking `citation_guard` on promote/export with HITL override + audit, and fail-closed-capable data masking at LLM egress.
+- **Supply Chain SCRM Dashboard** (`/supply_chain`) — 11th design canvas. Full 8-component integration: vendor registry with SCRM risk tiering, CVE triage queue (SLA-tracked), ISA agreement lifecycle, SBOM records, Section 889 compliance status. IQE adapter with 4 registered collections. CUI // SP-CTI classification banner.
+- **Chat AI Governance panels** — GOV and INTEL right-sidebar tabs now load live data on every context switch. GOV shows: AI model (color-coded), classification marking, user, session ID, message count, links to AI Transparency / Explainability / Accountability pages. INTEL shows: RAG readiness %, Bayesian compliance score, complexity level, requirements + documents count, session health.
+- **Spinning indicators across all AI panels** — RICOAS, GOV, and INTEL tabs each show a blue processing bar whenever the AI is handling a request. Fires immediately on message send (both intake and regular chat), clears when the server reports `is_processing: false`.
+- **Poll backoff on disconnect** — `pollContextState` now uses exponential backoff (2ⁿ seconds, capped at 30s) after 2 consecutive `ERR_CONNECTION_REFUSED` failures, eliminating console flooding when the server is restarted.
+- **Context limit error messaging** — `POST /api/chat/contexts` 429 responses now surface a clear message: *"Context limit reached (N active). Close an existing context first."* Previously swallowed silently.
+- **favicon.ico 204** — Browser favicon requests no longer flood logs with 404 errors.
+- **Chat DB fallback after restart** — `chat_manager.get_context()` now falls back to the `chat_contexts` DB table when a context isn't in memory, eliminating 404s on the `/state` polling endpoint after a dashboard restart.
+- **Use case URL audit** — 6 broken `quick_action` URLs in `args/use_cases.yaml` repaired (5× `/network/ask` → `/supply_chain`, 1× `/audit` → `/prod-audit`).
+
+---
+
+## What's New in 1.2.26 — AADC Solution Packs & Autonomous Coder
+
+- **AADC Solution Packs** — 7 pre-wired agentic AI templates added to the Agentic AI Design Canvas. Each pack ships with pre-placed nodes, wired edges, a seeded risk register, compliance baseline, MITRE ATLAS scenario mappings, and a quick-start wizard. Packs: Customer Service Agent, Autonomous Coder, Knowledge Research Agent, Cybersecurity SOC Agent, Healthcare Admin Agent, Gov/Procurement Agent, Multi-Agent Research Lab.
+- **Autonomous Coder — Live Sample App** — A fully working agentic AI application ships at `/autonomous-coder/`. Multi-agent pipeline: Task Spec → Input Sanitizer → Orchestrator → Planner Agent → Schema Enforcer → Coder Agent → Schema Enforcer → Validator Agent → Audit Logger. Three backends: ICDEV LLM router, Ollama, or offline stub. CLI: `python -m apps.autonomous_coder.main "task"`. Validated via E2E build — quicksort generated and scored 95/100 in ~81s against Claude Sonnet.
+- **Lesson-Learned LL-001/LL-002 applied universally** — E2E build surfaced two universal risks now applied to all 7 solution packs: **LL-001** — Schema Enforcer nodes added at every LLM→agent handoff; **LL-002** — circuit breaker `max_duration_s` defaulted to 300s for multi-step LLM pipelines.
+- **Sample Applications gallery** — `/agentic-ai/` now shows a Sample Applications section alongside Solution Packs and design templates.
+
+---
+
+## What's New in 1.2.25 — Chat Common Use Cases & RICOAS v2
+
+- **10 Government Use Cases** — Pre-seeded use case catalog in the `/chat` left sidebar covering: Modernization, Budget Sprint, Doc Refresh, SBOM & Supply Chain Attestation, OSCAL Package, Compliance Gap Analysis, FedRAMP Assessment, Incident Playbook, Architecture Review, and Zero Trust Alignment.
+- **Compact mode** — The use case sidebar collapses to icon-only chips with category filters (All / Gov / Dev / Finance). Ctrl+click chains multiple use cases into a sequential intake workflow.
+- **Canvas seeding** — Activating a use case auto-seeds relevant design canvas nodes (NDC topology, SDC threat models, etc.) and pre-populates `template_requirements` so the intake conversation starts informed.
+- **Standalone app generator** — Every use case can generate a downloadable standalone HTML app from the collected requirements. Fixed variance sign formatting (`-$50.00` → `-$50.00`), vendor dropdown population, and column manager extended to all 13 use case types.
+- **Workflow step bar** — Use cases with defined workflow stages display a progress indicator in the RICOAS sidebar with a "Next Step →" button to advance through structured intake phases.
+- **All 12 post-export actions** — Send to Kanban, Dry Run (COAs), Validate PRD, Generate PRD, and Standalone App are now available for all use cases, not just the first three.
+
+---
+
+## What's New in 1.2.24 — Strategos OSINT & Digital Twin Canvases
+
+- **Digital Twin for all 5 canvases** — NDC, SDC, BDC, DDC, and ODC each have a `/digital-twin` page with graphical simulation results, AI chat-to-delta, and "Load from Canvas" integration. Air-gap safe (no external CDN dependencies).
+- **Strategos OSINT Phase 2** — Conflict intel pipeline (STIX 2.1 / CERT-UA importer), signal priority queue, AIS track processor for naval ORBAT, Kalibr threat ring overlay on GeoSIGINT, historical pre-war baselines (23 cases), supply-degradation coefficients in COA attrition model.
+- **Strategos predictive intel** — Leadership briefing dashboard, War Council brief with full RAG upgrade (corrective RAG on Strategy Agent), information signal scorer (rhetoric, dehumanization, cyber recon, disinfo surge), targeting package optimizer with greedy + 1-opt synergy algorithm.
+- **FathomDesk multi-agent panel** — Bull/Bear debate engine, decision audit trail, panel confidence flag, Vol Deleveraging and Crowding Ratio alerts, cross-asset rotation engine (7 ratios), IV rank computation.
+- **Cross-canvas event bus** — DB-persisted events fire across all canvases: `pipeline_deployed` on PDC triggers SDC threat model refresh; BDC ISA expiry fires 90-day alerts with 30-day Telegram notifications.
+- **GNS3 + ZTP integration** — Full GNS3 topology builder with Zero Touch Provisioning workflow and console push tool in NDC.
+- **Ontology Explorer** — D3 hierarchy tree visualization for the ICDEV knowledge graph ontology with RDF/Turtle class hierarchy loaded from `args/ontology/*.ttl`.
+
+---
+
+## What's New in 1.2.23 — IQE Rollout & Ask Any Canvas
+
+- **Ask any canvas** — Natural-language Q&A over the knowledge graph of each design canvas. Every canvas has a `/<canvas>/ask` page and `/<canvas>/api/ask` POST endpoint.
+- **IQE v0.1 — ICDEV Query Engine** — Declarative `foreach / where / select` DSL for compliance and network-health checks across all design-canvas databases. Ships with recursive-descent parser, typed AST, SQL-injection-safe executor, and seed query libraries for all canvases.
+- **IQE rollout to all 10 canvases** — NDC, SDC, PDC, BDC, DDC, ODC, IDC, AADC, QDC, MDC each have ≥3 seed queries and a registered IQE adapter.
+- **MITRE ATT&CK matrix dashboard** — ODC gets a full attack matrix page (`/security/ask`) with drill-through, Sigma rule generator, Splunk SPL export, and Caldera REST adapter.
+- **IaC generation** — IDC emits Terraform, CloudFormation, Pulumi, Ansible, and Helm artifacts from canvas designs. CLI: `python -m tools.infra_canvas.emit`.
+- **Instant KG freshness** — Save-hooks on every canvas design `POST`/`PUT` re-index the knowledge graph in <1s. 6-hour `canvas_indexer` Genesis reflex as safety net.
+- **Failure Triage auto-fix loop** — Genesis daemon runs `failure_triage` on a 30-min cadence. Two-tier LLM routing: Claude diagnoses, Ollama generates patches. Confidence threshold 0.85, 5-apply/hour rate cap. Opt-in via `ICDEV_AUTOFIX_ENABLED=true`.
+
+---
+
+## What's New in 1.2.22
+
+- **AADC Solution Packs** — 7 pre-wired agentic AI templates added to the Agentic AI Design Canvas. Each pack ships with pre-placed nodes, wired edges, a seeded risk register, compliance baseline, MITRE ATLAS scenario mappings, and a quick-start wizard. Packs: Customer Service Agent, Autonomous Coder, Knowledge Research Agent, Cybersecurity SOC Agent, Healthcare Admin Agent, Gov/Procurement Agent, Multi-Agent Research Lab. See [Agentic AI Design Canvas](#agentic-ai-design-canvas) below.
+- **Autonomous Coder — Live Sample App** — A fully working agentic AI application ships at `/autonomous-coder/`. Multi-agent pipeline: Task Spec → Input Sanitizer → Orchestrator → Planner Agent → Schema Enforcer → Coder Agent → Schema Enforcer → Validator Agent → Audit Logger. Three backends: ICDEV LLM router, Ollama, or offline stub. CLI: `python -m apps.autonomous_coder.main "task"`. Validated via E2E build — quicksort generated and scored 95/100 in ~81s against Claude Sonnet.
+- **Lesson-Learned LL-001/LL-002 applied universally** — E2E build of Autonomous Coder surfaced two universal risks now applied to all 7 solution packs: **LL-001** — Schema Enforcer nodes added at every LLM→agent handoff to catch structured-output non-compliance before it reaches downstream consumers; **LL-002** — circuit breaker `max_duration_s` defaulted to 300s (from 120s) for multi-step LLM pipelines that routinely take 80–110s per run. Both risks added to each pack's risk register.
+- **Sample Applications gallery** — `/agentic-ai/` now shows a Sample Applications section alongside the Solution Packs and design templates. Autonomous Coder is the first entry; more sample apps link directly to their `/autonomous-coder/`-style routes.
+
+---
+
+## What's New in 1.2.21
+
+- **Ask any canvas** — natural-language Q&A over the knowledge graph of each design canvas. Every canvas has a `/<canvas>/ask` page and `/<canvas>/api/ask` POST endpoint. See [Ask Any Canvas](#ask-any-canvas).
+- **Instant KG freshness** — save-hooks on every canvas design `POST`/`PUT` re-index the KG in <1s, so `/ask` never lags real work. A 6-hour `canvas_indexer` Genesis reflex acts as a safety net.
+- **Backend-aware indexer** — `tools/knowledge_graph/canvas_indexer.py` speaks SQLite *or* PostgreSQL per-canvas (respects `<CANVAS>_STORAGE_BACKEND`), so the same pipeline works on a laptop and in air-gapped IL4/IL5 deployments.
+- **Scheduler worktree-before-rebase fix** — 52-branch preserved-branch pile (caused by worktree-locked rebases) cleared; new reflex detaches worktree before merge so the pile can't regrow.
+- **Single license** — commercial tier removed. ICDEV™ is Apache-2.0, full stop.
+- **Failure Triage auto-fix loop** (1.2.17–1.2.19) — Genesis daemon runs `failure_triage` on a 30-min cadence. Two-tier LLM routing: Claude diagnoses, Ollama generates patches. Conservative defaults: `ICDEV_AUTOFIX_ENABLED=false`, confidence threshold 0.85, 5-apply/hour rate cap, task-type whitelist. Patches land as `status='suggested'` Oracle cards for human review. Opt-in `ICDEV_AUTOFIX_AUTOMERGE` fast-forward merges verified clean patches. Includes full worktree isolation — each fix runs in `.tmp/autofix/<task>/` and rolls back on failure.
+- **IQE v0.1 — ICDEV Query Engine** — declarative `foreach / where / select` DSL for compliance and network-health checks across all design-canvas databases. Ships with recursive-descent parser, typed AST, SQL-injection-safe executor, and a 5-query NDC seed library (vendor inventory, BGP peer asymmetry, CAT I STIG open findings, capacity threshold).
+- **FathomDesk Phase 7+** — complex options (13 strategies including multi-expiry calendar butterfly), crypto spot (10 pairs), tax-lots (FIFO/LIFO/specific-ID with wash-sale flag), and day-trader hot-keys with 5-second polling.
 
 ---
 
@@ -344,6 +558,12 @@ pip install icdev
 # Interactive setup wizard — choose DB, canvases, LLM, features
 icdev-setup
 
+# Canvases (Tech Writer, Notebook, BI Dashboard, etc.) are opt-in and
+# disabled by default if you skip the wizard — check/enable them anytime:
+icdev status              # show what's currently on
+icdev enable --list       # list every available canvas/subsystem toggle
+icdev enable dic          # e.g. turn on the Document Intelligence Canvas
+
 # Or skip the wizard with a mission profile:
 pip install 'icdev[developer]'       # local LLM + dev tools
 pip install 'icdev[govcloud]'        # IL4/IL5 GovCloud (Bedrock + security)
@@ -408,6 +628,10 @@ pip install --no-index --find-links ./icdev-wheels 'icdev[govcloud]'
 git clone https://github.com/icdev-ai/icdev.git
 cd icdev
 pip install -r requirements.txt
+
+# Configure environment (copy sample, then edit with your LLM keys)
+cp .env.sample .env
+# Edit .env — set OLLAMA_MODEL, API keys, DB backend, and canvas toggles
 
 # Initialize databases (588+ tables)
 python tools/db/init_icdev_db.py
@@ -636,6 +860,10 @@ python tools/dashboard/app.py
 | `/security/ask` | **Ask SDC** — Q&A over the STRIDE × NIST crosswalk graph |
 | `/devops/ask` | **Ask PDC** — Q&A over pipeline stages + connectors |
 | `/boundary/ask` | **Ask BDC** — Q&A over authorization-boundary designs |
+| `/data/mesh` | **Data Mesh** — domain registry, data products, SLA enforcement, stewardship ownership |
+| `/data/governance` | **Data Governance Engine** — policy enforcement, NIST 800-188 / DoDI 8320.02 alignment, stewardship workflows |
+| `/data/products` | **Data Products** — catalog with classification, lineage, SLA status, and consumer subscriptions |
+| `/data/csp` | **CSP Analysis** — cost projection, compliance posture, risk tiering across 6 cloud providers |
 | `/data/ask` | **Ask DDC** — Q&A over column-level data lineage |
 | `/observability/ask` | **Ask ODC** — Q&A over detection coverage + Sigma rules |
 | `/infra/ask` | **Ask IDC** — Q&A over IaC designs (Terraform/Pulumi/CloudFormation resources) |
@@ -761,7 +989,7 @@ icdev/
 │   ├── autonomous_coder/ # Autonomous Coder — multi-agent code generation
 │   ├── strategos/        # Strategos — multi-domain operations COP
 │   ├── geosigint/        # GeoSIGINT — geographic intelligence dashboard
-│   └── alphadesk/        # FathomDesk — multi-agent trading intelligence
+│   └── fathomdesk/       # FathomDesk — market intelligence terminal (read-only)
 ├── args/                 # 30+ YAML/JSON configuration files
 ├── context/              # 42 compliance catalogs, language profiles
 ├── hardprompts/          # Reusable LLM instruction templates
